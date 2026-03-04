@@ -9,6 +9,7 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const workspaceRoutes = require('./routes/workspaceRoutes');
 
 dotenv.config();
 require('./config/passport');
@@ -33,6 +34,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/workspaces', workspaceRoutes);
 
 app.use(errorHandler);
 
