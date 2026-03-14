@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../ui/Button';
+import Logo from '../ui/Logo';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,14 +12,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-    <Link to="/" className="flex items-center gap-2">
-      <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/25">
-        <span className="text-white font-black text-sm tracking-tight">PF</span>
-      </div>
-      <span className="text-white font-black text-xl tracking-tight">
-        Project<span className="text-indigo-400">Flow</span>
-      </span>
-    </Link>
+    <Logo />
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
