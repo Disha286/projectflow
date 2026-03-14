@@ -1,7 +1,19 @@
-// LandingPage.jsx
+import Navbar from '../components/landing/Navbar';
+import Hero from '../components/landing/Hero';
+import Features from '../components/landing/Features';
+import Pricing from '../components/landing/Pricing';
+import Footer from '../components/landing/Footer';
+
 const LandingPage = () => {
-  return <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
-    <h1 className="text-4xl font-bold text-indigo-500">Landing Page 🚀</h1>
-  </div>
-}
+  return (
+    <div className="min-h-screen bg-gray-950">
+      <Navbar />
+      <Hero />
+      <Features />
+      <Pricing />
+      <Footer />
+    </div>
+  );
+};
+
 export default LandingPage;
