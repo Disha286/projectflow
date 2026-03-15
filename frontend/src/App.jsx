@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import useAuthStore from './store/authStore';
 import useThemeStore from './store/themeStore';
 import AppLayout from './components/layout/AppLayout';
+import KanbanPage from './pages/KanbanPage';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -63,7 +64,8 @@ function App() {
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/members" element={<DashboardPage />} />
           <Route path="/analytics" element={<DashboardPage />} />
-         <Route path="/settings" element={<DashboardPage />} />
+          <Route path="/settings" element={<DashboardPage />} />
+          <Route path="/projects/:projectId" element={<KanbanPage />} />
       </Route>
 
           <Route path="*" element={<NotFoundPage />} />
