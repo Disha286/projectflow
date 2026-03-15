@@ -11,14 +11,18 @@ const useThemeStore = create(
         set({ isDark: newTheme });
         if (newTheme) {
           document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
         } else {
           document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
         }
       },
 
       initTheme: () => {
         if (get().isDark) {
           document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
         }
       }
     }),

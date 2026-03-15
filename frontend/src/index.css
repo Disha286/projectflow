@@ -15,3 +15,18 @@ body {
   color: #f9fafb;
   font-family: 'Inter', sans-serif;
 }
+
+.light body {
+  background-color: #f9fafb;
+  color: #111827;
+}
+
+.light .bg-gray-950 { background-color: #f9fafb; }
+.light .bg-gray-900 { background-color: #ffffff; }
+.light .bg-gray-800 { background-color: #f3f4f6; }
+.light .bg-gray-700 { background-color: #e5e7eb; }
+.light .text-white { color: #111827; }
+.light .text-gray-400 { color: #6b7280; }
+.light .text-gray-300 { color: #374151; }
+.light .border-gray-800 { border-color: #e5e7eb; }
+.light .border-gray-700 { border-color: #d1d5db; }
