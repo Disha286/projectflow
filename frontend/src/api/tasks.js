@@ -12,3 +12,4 @@ export const deleteCommentAPI = (taskId, commentId) => API.delete(`/tasks/${task
 export const addSubTaskAPI = (id, data) => API.post(`/tasks/${id}/subtasks`, data);
 export const updateSubTaskAPI = (taskId, subTaskId, data) => API.put(`/tasks/${taskId}/subtasks/${subTaskId}`, data);
 export const searchTasksAPI = (params) => API.get('/tasks/search', { params });
+export const deleteSubTaskAPI = (taskId, subTaskId) => API.delete(`/tasks/${taskId}/subtasks/${subTaskId}`);
