@@ -1,3 +1,4 @@
+import ProjectsPage from './pages/ProjectsPage';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -57,13 +58,13 @@ function App() {
 
           {/* App routes with layout */}
           <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/my-tasks" element={<DashboardPage />} />
-            <Route path="/projects" element={<DashboardPage />} />
-            <Route path="/members" element={<DashboardPage />} />
-            <Route path="/analytics" element={<DashboardPage />} />
-            <Route path="/settings" element={<DashboardPage />} />
-          </Route>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/my-tasks" element={<DashboardPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/members" element={<DashboardPage />} />
+          <Route path="/analytics" element={<DashboardPage />} />
+         <Route path="/settings" element={<DashboardPage />} />
+      </Route>
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
