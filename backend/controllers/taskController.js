@@ -154,6 +154,16 @@ const updateStatus = asyncHandler(async (req, res) => {
     { new: true }
   ).populate('assignees', 'name email avatar');
 
+  // Emit real-time update
+  const io = req.app.get('io');
+  if (io) {
+    io.to(`project:${task.project}`).emit('task:updated', {
+      taskId: task._id,
+      updates: { status },
+      updatedBy: req.user.name
+    });
+  }
+
   if (status === 'done') {
     for (const assigneeId of task.assignees) {
       await createNotification({
@@ -188,6 +198,16 @@ const addComment = asyncHandler(async (req, res) => {
 
   await task.save();
   await task.populate('comments.author', 'name email avatar');
+
+  // Emit real-time comment
+const io = req.app.get('io');
+if (io) {
+  io.to(`project:${task.project}`).emit('comment:added', {
+    taskId: task._id,
+    comment: newComment,
+    addedBy: req.user.name
+  });
+}
 
   // Notify task assignees
   for (const assigneeId of task.assignees) {

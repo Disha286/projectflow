@@ -11,6 +11,7 @@ import FilterBar from '../components/tasks/FilterBar';
 import TaskDetailModal from '../components/tasks/TaskDetailModal';
 import CreateTaskModal from '../components/tasks/CreateTaskModal';
 import Button from '../components/ui/Button';
+import useProjectSocket from '../hooks/useProjectSocket';
 
 const views = [
   {
@@ -47,6 +48,8 @@ const ProjectPage = () => {
     dueDate: ''
   });
 
+  useProjectSocket(projectId, currentWorkspace?._id);
+  
   const { data: projectData } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => getProjectAPI(projectId).then(r => r.data),
@@ -186,5 +189,6 @@ const ProjectPage = () => {
     </div>
   );
 };
+
 
 export default ProjectPage;

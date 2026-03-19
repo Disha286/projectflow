@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { formatDistanceToNow } from 'date-fns';
 import useAuthStore from '../../store/authStore';
 import useThemeStore from '../../store/themeStore';
+import { getNotificationsAPI, markAsReadAPI, markAllAsReadAPI } from '../../api/notifications';
 
 const Topbar = ({ onMenuClick }) => {
   const navigate = useNavigate();
@@ -11,6 +14,27 @@ const Topbar = ({ onMenuClick }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [search, setSearch] = useState('');
+
+  const queryClient = useQueryClient();
+
+  const { data: notifData } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: () => getNotificationsAPI().then(r => r.data),
+    refetchInterval: 30000
+  });
+
+  const notifications = notifData?.notifications || [];
+  const unreadCount = notifData?.unreadCount || 0;
+
+  const { mutate: markRead } = useMutation({
+    mutationFn: (id) => markAsReadAPI(id),
+    onSuccess: () => queryClient.invalidateQueries(['notifications'])
+  });
+
+  const { mutate: markAllRead } = useMutation({
+    mutationFn: () => markAllAsReadAPI(),
+    onSuccess: () => queryClient.invalidateQueries(['notifications'])
+  });
 
   const handleLogout = async () => {
     await logout();
@@ -74,7 +98,11 @@ const Topbar = ({ onMenuClick }) => {
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
-            <span className="absolute top-1 right-1 w-2 h-2 bg-indigo-500 rounded-full" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-indigo-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
           </button>
 
           <AnimatePresence>
@@ -87,11 +115,46 @@ const Topbar = ({ onMenuClick }) => {
               >
                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700">
                   <span className="text-white font-semibold text-sm">Notifications</span>
-                  <button className="text-indigo-400 text-xs hover:text-indigo-300">Mark all read</button>
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={() => markAllRead()}
+                      className="text-indigo-400 text-xs hover:text-indigo-300"
+                    >
+                      Mark all read
+                    </button>
+                  )}
                 </div>
-                <div className="p-8 text-center">
-                  <div className="text-4xl mb-2">🔔</div>
-                  <p className="text-gray-400 text-sm">No notifications yet</p>
+                <div className="max-h-80 overflow-y-auto">
+                  {notifications.length === 0 ? (
+                    <div className="p-8 text-center">
+                      <div className="text-4xl mb-2">🔔</div>
+                      <p className="text-gray-400 text-sm">No notifications yet</p>
+                    </div>
+                  ) : (
+                    notifications.map((n) => (
+                      <div
+                        key={n._id}
+                        className={`px-4 py-3 border-b border-gray-700/50 hover:bg-gray-700/50 transition-colors cursor-pointer ${!n.isRead ? 'bg-indigo-500/5' : ''}`}
+                        onClick={() => markRead(n._id)}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                            {n.createdBy?.name?.[0] || '?'}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white text-xs font-medium">{n.title}</p>
+                            <p className="text-gray-400 text-xs mt-0.5 truncate">{n.message}</p>
+                            <p className="text-gray-600 text-xs mt-1">
+                              {formatDistanceToNow(new Date(n.createdAt), { addSuffix: true })}
+                            </p>
+                          </div>
+                          {!n.isRead && (
+                            <div className="w-2 h-2 bg-indigo-500 rounded-full flex-shrink-0 mt-1" />
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </motion.div>
             )}

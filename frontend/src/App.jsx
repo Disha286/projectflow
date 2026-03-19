@@ -7,7 +7,7 @@ import useAuthStore from './store/authStore';
 import useThemeStore from './store/themeStore';
 import AppLayout from './components/layout/AppLayout';
 import ProjectPage from './pages/ProjectPage';
-
+import useSocket from './hooks/useSocket';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -39,6 +39,7 @@ const PublicRoute = ({ children }) => {
 function App() {
   const { initTheme } = useThemeStore();
   const { getMe, isAuthenticated } = useAuthStore();
+  useSocket(); // Intialize socket connection
 
   useEffect(() => {
     initTheme();
