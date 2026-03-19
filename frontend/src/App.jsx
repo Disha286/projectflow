@@ -8,6 +8,7 @@ import useThemeStore from './store/themeStore';
 import AppLayout from './components/layout/AppLayout';
 import ProjectPage from './pages/ProjectPage';
 import useSocket from './hooks/useSocket';
+import SprintPage from './pages/SprintPage';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -68,6 +69,7 @@ function App() {
           <Route path="/analytics" element={<DashboardPage />} />
           <Route path="/settings" element={<DashboardPage />} />
           <Route path="/projects/:projectId" element={<ProjectPage />} />
+          <Route path="/projects/:projectId/sprints" element={<SprintPage />} />
       </Route>
 
           <Route path="*" element={<NotFoundPage />} />

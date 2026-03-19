@@ -49,7 +49,7 @@ const ProjectPage = () => {
   });
 
   useProjectSocket(projectId, currentWorkspace?._id);
-  
+
   const { data: projectData } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => getProjectAPI(projectId).then(r => r.data),
@@ -101,6 +101,13 @@ const ProjectPage = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => navigate(`/projects/${projectId}/sprints`)}
+          >
+          🏃 Sprints
+        </Button>
 
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
