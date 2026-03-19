@@ -1,4 +1,3 @@
-import TaskDetailModal from './TaskDetailModal';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
@@ -19,12 +18,11 @@ import CreateTaskModal from './CreateTaskModal';
 
 const STATUSES = ['backlog', 'todo', 'in_progress', 'in_review', 'done'];
 
-const KanbanBoard = ({ projectId, workspaceId }) => {
+const KanbanBoard = ({ projectId, workspaceId, onEditTask }) => {
   const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
   const [defaultStatus, setDefaultStatus] = useState('todo');
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -107,7 +105,7 @@ const KanbanBoard = ({ projectId, workspaceId }) => {
               status={status}
               tasks={getTasksByStatus(status)}
               onAddTask={handleAddTask}
-             onEditTask={(task) => setSelectedTaskId(task._id)}
+              onEditTask={(task) => onEditTask && onEditTask(task)}
             />
           ))}
         </div>
@@ -124,13 +122,6 @@ const KanbanBoard = ({ projectId, workspaceId }) => {
         workspaceId={workspaceId}
         defaultStatus={defaultStatus}
       />
-
-      <TaskDetailModal
-        taskId={selectedTaskId}
-        isOpen={!!selectedTaskId}
-        onClose={() => setSelectedTaskId(null)}
-        projectId={projectId}
-     />
     </>
   );
 };
