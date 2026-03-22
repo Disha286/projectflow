@@ -96,3 +96,8 @@ const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
+// Keep alive ping for free tier
+setInterval(() => {
+  console.log('⚡ Keep alive ping');
+}, 14 * 60 * 1000); // ping every 14 minutes
